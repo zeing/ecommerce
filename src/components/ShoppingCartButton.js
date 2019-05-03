@@ -1,8 +1,13 @@
 import React, { Component } from 'react'
 import { DropButton, Box, Stack } from 'grommet';
 import { Shop } from 'grommet-icons'
-export default class ShoppingCartButton extends Component {
+import { connect } from 'react-redux';
+import CartItemList from './CartItemList';
+class ShoppingCartButton extends Component {
   render() {
+    const {
+      cartLength
+    } = this.props;
     return (
       <DropButton
         dropAlign={{
@@ -10,7 +15,9 @@ export default class ShoppingCartButton extends Component {
           right: 'right'
         }}
         dropContent={
-          <Box>Cart product list</Box>
+          <Box>
+            <CartItemList />
+          </Box>
         }
       >
         <Stack
@@ -24,10 +31,16 @@ export default class ShoppingCartButton extends Component {
             pad={{horizontal: 'xsmall'}}
             round
           >
-            {0}
+            {cartLength}
           </Box>
         </Stack>
       </DropButton>
     )
   }
 }
+const mapStateToProps = state => {
+  return {
+    cartLength: state.cart.cartItems.length
+  }
+}
+export default connect(mapStateToProps)(ShoppingCartButton)

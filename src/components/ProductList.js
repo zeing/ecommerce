@@ -11,7 +11,11 @@ class ProductList extends React.Component {
   componentDidMount() {
     this.fetchData()
   }
-
+  componentDidUpdate(prevProps, prevState) {
+    if(prevProps.search !== this.props.search) {
+      console.log('Search change', this.props.search)
+    }
+  }
   fetchData = async () => {
     const res = await request.get('/products?include=main_image')
     const data = res.data.data.map(item => {
@@ -24,6 +28,7 @@ class ProductList extends React.Component {
         image = file.link.href
       }
       return {
+        id: item.id,
         name: item.name,
         description: item.description,
         image,
