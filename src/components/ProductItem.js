@@ -7,7 +7,7 @@ import {
   Stack,
   Button,
 } from 'grommet'
-import { FaShoppingBag } from 'react-icons/fa';
+import { Shop } from 'grommet-icons'
 
 class ProductItem extends React.Component {
   handleAddToCart = () => {
@@ -38,7 +38,7 @@ class ProductItem extends React.Component {
           <Text textAlign="center">
             {description}
           </Text>
-          <Button primary pad="small" margin="small" label="Add to cart" onClick={this.handleAddToCart}/>
+          <Button primary pad="small" margin="small" icon={<Shop />} label="Add to cart" onClick={this.handleAddToCart}/>
         </Box>
       </Box>
     )

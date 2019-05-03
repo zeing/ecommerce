@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { DropButton, Box, Stack } from 'grommet';
-import { FaShoppingBag } from 'react-icons/fa'
+import { Shop } from 'grommet-icons'
 export default class ShoppingCartButton extends Component {
   render() {
     return (
@@ -17,7 +17,7 @@ export default class ShoppingCartButton extends Component {
           anchor="top-right"
         >
           <Box pad='xsmall'>
-            <FaShoppingBag size={32}/>
+            <Shop size="32px"/>
           </Box>
           <Box
             background="accent-1"
