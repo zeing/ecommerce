@@ -7,7 +7,6 @@ import {
   Stack,
   Button,
 } from 'grommet'
-import { FaShoppingBag } from 'react-icons/fa';
 
 class ProductItem extends React.Component {
   handleAddToCart = () => {
