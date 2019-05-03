@@ -13,12 +13,20 @@ class ProductList extends React.Component {
   }
 
   fetchData = async () => {
-    const res = await request.get('/products')
+    const res = await request.get('/products?include=main_image')
     const data = res.data.data.map(item => {
+      let image = 'https://via.placeholder.com/300x400.png';
+      if (item.relationships.main_image) {
+        const fileId = item.relationships.main_image.data.id
+        const file = res.data.included.main_images.find(function(el) {
+          return fileId === el.id;
+        });
+        image = file.link.href
+      }
       return {
         name: item.name,
         description: item.description,
-        image: 'https://via.placeholder.com/300x400.png',
+        image,
         price: item.meta.display_price.with_tax.formatted,
       }
     })

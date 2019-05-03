@@ -1,5 +1,6 @@
 import React from 'react'
 import { Box, Heading } from 'grommet';
+import ShoppingCartButton from './ShoppingCartButton';
 
 class AppBar extends React.Component {
   render() {
@@ -12,7 +13,7 @@ class AppBar extends React.Component {
         background='brand'
         pad={{
           left: 'medium',
-          right: 'small',
+          right: 'medium',
           vertical: 'small'
         }}
         elevation='medium'
@@ -24,6 +25,9 @@ class AppBar extends React.Component {
         >
           Devincube store
         </Heading>
+        <Box>
+          <ShoppingCartButton />
+        </Box>
       </Box>
     )
   }
