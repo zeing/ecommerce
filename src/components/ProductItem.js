@@ -5,9 +5,14 @@ import {
   Heading,
   Text,
   Stack,
+  Button,
 } from 'grommet'
+import { FaShoppingBag } from 'react-icons/fa';
 
 class ProductItem extends React.Component {
+  handleAddToCart = () => {
+    console.log('Add to cart')
+  }
   render() {
     const { name, description, image, price } = this.props
     return (
@@ -26,13 +31,14 @@ class ProductItem extends React.Component {
             </Box>
           </Stack>
         </Box>
-        <Box>
+        <Box align="center">
           <Heading textAlign="center" level={4} margin={{vertical: 'xsmall'}}>
             {name}
           </Heading>
           <Text textAlign="center">
             {description}
           </Text>
+          <Button primary pad="small" margin="small" label="Add to cart" onClick={this.handleAddToCart}/>
         </Box>
       </Box>
     )
