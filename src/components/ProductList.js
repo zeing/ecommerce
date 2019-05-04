@@ -9,15 +9,19 @@ class ProductList extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchData()
+    this.fetchData();
   }
-  componentDidUpdate(prevProps, prevState) {
-    if(prevProps.search !== this.props.search) {
-      console.log('Search change', this.props.search)
+
+  componentDidUpdate(prevProps, prevState){
+    if(prevProps.search !== this.props.search){
+      console.log('Search change', this.props.search);
+      this.fetchData();
     }
   }
+
   fetchData = async () => {
-    const res = await request.get('/products?include=main_image')
+    const { search } = this.props;
+    const res = await request.get(`/products?include=main_image&filter=like(name,*${search}*)`);
     const data = res.data.data.map(item => {
       let image = 'https://via.placeholder.com/300x400.png';
       if (item.relationships.main_image) {
