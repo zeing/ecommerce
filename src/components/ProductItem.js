@@ -7,10 +7,17 @@ import {
   Stack,
   Button,
 } from 'grommet'
+import { Shop } from 'grommet-icons'
+import { connect } from 'react-redux'
 
 class ProductItem extends React.Component {
   handleAddToCart = () => {
     console.log('Add to cart')
+    const {
+      addItem,
+      name
+    } = this.props;
+    addItem(name)
   }
   render() {
     const { name, description, image, price } = this.props
@@ -37,11 +44,22 @@ class ProductItem extends React.Component {
           <Text textAlign="center">
             {description}
           </Text>
-          <Button primary pad="small" margin="small" label="Add to cart" onClick={this.handleAddToCart}/>
+          <Button primary pad="small" margin="small" icon={<Shop />} label="Add to cart" onClick={this.handleAddToCart}/>
         </Box>
       </Box>
     )
   }
 }
 
-export default ProductItem
+const mapStateToProps = state => {
+  console.log(state)
+  return {
+    state
+  }
+}
+const mapDispatchToProps = dispatch => {
+  return {
+    addItem: dispatch.cart.addItem
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ProductItem)
