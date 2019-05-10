@@ -7,14 +7,9 @@ class LoginForm extends Component {
     username: '',
     password: '',
   }
-  handleUsernameChange = (e) => {
+  handleChange = (e) => {
     this.setState({
-      username: e.target.value,
-    })
-  }
-  handlePasswordChange = (e) => {
-    this.setState({
-      password: e.target.value,
+      [e.target.name]: e.target.value
     })
   }
   handleLogin = async () => {
@@ -31,8 +26,8 @@ class LoginForm extends Component {
   render() {
     return (
       <div>
-        <TextInput placeholder="Username" onChange={this.handleUsernameChange}/>
-        <TextInput placeholder="password" type="password" onChange={this.handlePasswordChange}/>
+        <TextInput name="username" placeholder="Username" onChange={this.handleChange}/>
+        <TextInput name="password" placeholder="password" type="password" onChange={this.handleChange}/>
         <Button label="Sign in" onClick={this.handleLogin}/>
       </div>
     )
