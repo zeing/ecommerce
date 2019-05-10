@@ -1,3 +1,4 @@
+import request from '../../utils/request';
 export const cart = {
   state: {
     cartItems: [
@@ -5,7 +6,8 @@ export const cart = {
       //   productId: 1,
       //   amount: 2
       // }
-    ]
+    ],
+    totalPrice: 0,
   },
   reducers: {
     // handle state changes with pure functions
@@ -36,6 +38,18 @@ export const cart = {
     },
     deleteItem(state, payload) {
       return state
+    },
+    setCartItems(state, payload) {
+      return {
+        ...state,
+        cartItems: payload
+      }
+    },
+    setTotalPrice(state, payload) {
+      return {
+        ...state,
+        totalPrice: payload
+      }
     }
   },
   effects: (dispatch) => ({
@@ -45,5 +59,21 @@ export const cart = {
     //   await new Promise(resolve => setTimeout(resolve, 1000))
     //   dispatch.count.increment(payload)
     // }
+    async getCartItemsAsync() {
+      const res = await request.get('/carts/123456/items')
+      console.log(res.data)
+      const cleanData = res.data.data.map((item) => {
+        return {
+          id: item.id,
+          productId: item.product_id,
+          amount: item.quantity,
+          name: item.name,
+          image: 'https://via.placeholder.com/300x400.png',
+          totalPrice: item.meta.display_price.with_tax.value.formatted,
+          pricePerUnit: item.meta.display_price.with_tax.unit.formatted,
+        }
+      })
+      dispatch.cart.setCartItems(cleanData)
+    }
   })
 }
