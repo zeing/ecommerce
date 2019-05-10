@@ -3,6 +3,7 @@ import { Box, Heading, Button } from 'grommet';
 import ShoppingCartButton from './ShoppingCartButton';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import store from '../store';
 
 class AppBar extends React.Component {
   render() {
@@ -46,8 +47,9 @@ class AppBar extends React.Component {
   }
 }
 const mapStateToProps = state => {
+  const isAuthenticated = store.select.user.isAuthenticated
   return {
-    isAuthenticated: state.user.isAuthenticated
+    isAuthenticated: isAuthenticated(state)
   }
 }
 const mapDispatchToProps = dispatch => {

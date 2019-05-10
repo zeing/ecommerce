@@ -2,25 +2,32 @@
 
 export const user = {
   state: {
-    isAuthenticated: false,
+    token: null,
   },
   reducers: {
-    setAuthenticated(state, payload) {
+    setToken(state, payload) {
       return {
         ...state,
-        isAuthenticated: payload
+        token: payload
       }
     }
   },
   effects: (dispatch) => ({
     async login(payload, rootState) {
+      // call api here, get token
+      const token = 'asdfasdfs ldfkjq;2lkj;123123'
       if (payload.username === 'demo' && payload.password === 'password') {
-        return dispatch.user.setAuthenticated(true)
+        return dispatch.user.setToken(token)
       }
       return Promise.reject('Username or password not found')
     },
     async logout(payload, rootState) {
-      dispatch.user.setAuthenticated(false)
+      dispatch.user.setToken(null)
     }
-  })
+  }),
+  selectors: {
+    isAuthenticated() {
+      return (rootState, props) => rootState.user.token !== null
+    }
+  }
 }
