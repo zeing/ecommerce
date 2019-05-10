@@ -4,6 +4,9 @@ const CLIENT_ID = '4pakmXbHy4oVwFVJSK1yBA6AwZQGAj4hHkO1cfdzAt'
 // const CLIENT_ID = 'j9LpaD0agp2xeoLiEFX6Q6Nrd752P3BAifRSGxGG5r'
 
 const instance = axios.create({
+  headers: {
+    'Content-Type': 'application/json'
+  },
   baseURL: 'https://api.moltin.com/v2'
 });
 
