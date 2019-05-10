@@ -14,7 +14,10 @@ export const user = {
   },
   effects: (dispatch) => ({
     async login(payload, rootState) {
-      dispatch.user.setAuthenticated(true)
+      if (payload.username === 'demo' && payload.password === 'password') {
+        return dispatch.user.setAuthenticated(true)
+      }
+      return Promise.reject('Username or password not found')
     },
     async logout(payload, rootState) {
       dispatch.user.setAuthenticated(false)
