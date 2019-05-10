@@ -68,7 +68,7 @@ export const cart = {
           pricePerUnit: item.meta.display_price.with_tax.unit.formatted,
         }
       })
-      const totalPrice = res.data.meta.with_tax.amount / 100
+      const totalPrice = res.data.meta.display_price.with_tax.amount / 100
       dispatch.cart.setCartItems(cleanData)
       dispatch.cart.setTotalPrice(totalPrice)
     },

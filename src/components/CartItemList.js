@@ -16,7 +16,7 @@ class CartItemList extends Component {
           </Box>
         ))}
         <Box pad="small" border="bottom">
-          {totalPrice}
+          {totalPrice} Baht
         </Box>
       </Box>
     )
