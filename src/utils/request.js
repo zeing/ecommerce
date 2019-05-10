@@ -3,6 +3,9 @@ const KEY = 'motlin-token'
 // const CLIENT_ID = '4pakmXbHy4oVwFVJSK1yBA6AwZQGAj4hHkO1cfdzAt'
 const CLIENT_ID = 'PCvuouFCdj4Pii5AZTJj6zgMzNPIn1ooAVdHjJatNF'
 const instance = axios.create({
+  headers: {
+    'Content-Type': 'application/json'
+  },
   baseURL: 'https://api.moltin.com/v2'
 });
 

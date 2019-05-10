@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Box } from 'grommet'
+import CartItemList from '../components/CartItemList';
 
 class CheckoutPage extends Component {
   componentDidMount() {
@@ -14,7 +15,7 @@ class CheckoutPage extends Component {
         pad="small"
       >
         <Box width="medium">
-          cart items
+          <CartItemList />
         </Box>
         <Box flex>
           form

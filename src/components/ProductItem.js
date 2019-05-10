@@ -11,13 +11,17 @@ import { Shop } from 'grommet-icons'
 import { connect } from 'react-redux'
 
 class ProductItem extends React.Component {
-  handleAddToCart = () => {
+  handleAddToCart = async () => {
     console.log('Add to cart')
     const {
       addItem,
-      name
+      id
     } = this.props;
-    addItem(name)
+    await addItem({
+      id,
+      quantity: 1,
+      type: 'cart_item',
+    });
   }
   render() {
     const { name, description, image, price } = this.props
