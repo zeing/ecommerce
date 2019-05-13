@@ -4,33 +4,33 @@ import { Box } from 'grommet'
 import CartItemList from '../components/CartItemList';
 
 class CheckoutPage extends Component {
-    componentDidMount() {
-        this.props.getCartItems()
-    }
+  componentDidMount() {
+    this.props.getCartItems()
+  }
 
-    render() {
-        return (
-            <Box
-                direction="row"
-                pad="small"
-            >
-                <Box width="medium">
-                    <CartItemList />
-                </Box>
-                <Box flex>
-                    form
-                </Box>
-            </Box>
-        )
-    }
+  render() {
+    return (
+      <Box
+        direction="row"
+        pad="small"
+      >
+        <Box width="medium">
+          <CartItemList />
+        </Box>
+        <Box flex>
+          form
+        </Box>
+      </Box>
+    )
+  }
 }
 
 const mapStateToProps = (state) => ({
-    cartItems: state.cart.cartItems
+  cartItems: state.cart.cartItems
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    getCartItems: dispatch.cart.getCartItemsAsync
+  getCartItems: dispatch.cart.getCartItemsAsync
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CheckoutPage)

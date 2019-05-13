@@ -1,4 +1,5 @@
-import request from '../../utils/request';
+import request from '../../utils/request'
+
 export const cart = {
   state: {
     cartItems: [
@@ -11,34 +12,34 @@ export const cart = {
   },
   reducers: {
     // handle state changes with pure functions
-    addItem(state, payload) {
-      const item = state.cartItems.find(o => o.productId === payload);
-      if (item) {
-        const cartItems = state.cartItems.map(o => {
-          if (o.productId === payload) {
-            return {
-              ...o,
-              amount: o.amount + 1
-            }
-          }
-          return o
-        })
-        return {
-          ...state,
-          cartItems
-        }
-      }
-      return {
-        ...state,
-        cartItems: [{
-          productId: payload,
-          amount: 1
-        }, ...state.cartItems]
-      }
-    },
-    deleteItem(state, payload) {
-      return state
-    },
+    // addItem(state, payload) {
+    //   const item = state.cartItems.find(o => o.productId === payload);
+    //   if (item) {
+    //     const cartItems = state.cartItems.map(o => {
+    //       if (o.productId === payload) {
+    //         return {
+    //           ...o,
+    //           amount: o.amount + 1
+    //         }
+    //       }
+    //       return o
+    //     })
+    //     return {
+    //       ...state,
+    //       cartItems
+    //     }
+    //   }
+    //   return {
+    //     ...state,
+    //     cartItems: [{
+    //       productId: payload,
+    //       amount: 1
+    //     }, ...state.cartItems]
+    //   }
+    // },
+    // deleteItem(state, payload) {
+    //   return state
+    // },
     setCartItems(state, payload) {
       return {
         ...state,
@@ -53,14 +54,8 @@ export const cart = {
     }
   },
   effects: (dispatch) => ({
-    // handle state changes with impure functions.
-    // use async/await for async actions
-    // async incrementAsync(payload, rootState) {
-    //   await new Promise(resolve => setTimeout(resolve, 1000))
-    //   dispatch.count.increment(payload)
-    // }
     async getCartItemsAsync() {
-      const res = await request.get('/carts/123456/items')
+      const res = await request.get('/carts/123456/items?include=product')
       console.log(res.data)
       const cleanData = res.data.data.map((item) => {
         return {
@@ -73,7 +68,19 @@ export const cart = {
           pricePerUnit: item.meta.display_price.with_tax.unit.formatted,
         }
       })
+      const totalPrice = res.data.meta.display_price.with_tax.amount / 100
       dispatch.cart.setCartItems(cleanData)
-    }
+      dispatch.cart.setTotalPrice(totalPrice)
+    },
+    async addItem(payload, rootState) {
+      await request.post(`/carts/123456/items`, {
+        data: payload
+      })
+      await dispatch.cart.getCartItemsAsync()
+    },
+    async deleteItem(payload, rootState) {
+      await request.delete(`/carts/123456/items/${payload.id}`)
+      await dispatch.cart.getCartItemsAsync()
+    },
   })
 }

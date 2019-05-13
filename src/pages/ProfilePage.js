@@ -1,15 +1,11 @@
-import React from 'react'
-import {Box, Button, Heading} from "grommet/es6";
+import React, { Component } from 'react'
 
-
-class ProfilePage extends React.Component {
-    render() {
-
-
-        return (
-            <div>ProfilePage</div>
-        )
-    }
+export default class ProfilePage extends Component {
+  render() {
+    return (
+      <div>
+        Profile page
+      </div>
+    )
+  }
 }
-
-export default ProfilePage

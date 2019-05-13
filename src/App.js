@@ -1,35 +1,49 @@
 import React, { Component } from 'react';
 import { Grommet, Box } from 'grommet'
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom"
+import { connect } from 'react-redux'
+
 import AppBar from './components/AppBar'
 import ProductListPage from './pages/ProductListPage'
 import CheckoutPage from './pages/CheckoutPage'
-import ProfilePage from './pages/ProfilePage'
+
 import './App.css';
-import LoginPage from "./pages/LoginPage";
-import PrivateRoute from "./components/PrivateRoute"
+import LoginPage from './pages/LoginPage';
+import ProfilePage from './pages/ProfilePage';
+import PrivateRoute from './components/PrivateRoute';
 
 class App extends Component {
   render() {
+    const { isLoading } = this.props
+    if (isLoading) {
+      return (
+        <h1>Loading...</h1>
+      )
+    }
     return (
+      <Router>
         <Grommet plain full>
           <Box direction="column" fill>
-            <Router>
-              <>
-                <AppBar />
-                <Switch>
-                  <Route path="/" exact component={ProductListPage} />
-                  <Route path="/checkout" exact component={CheckoutPage} />
-                  <Route path="/login" exact component={LoginPage} />
-                  <PrivateRoute path="/profile" exact component={ProfilePage} />
-                  <Route patch="**" component={() => <h1>Not Found</h1>} />
-              </Switch>
-              </>
-            </Router>
+            <AppBar />
+            {/* <ProductListPage /> */}
+            <Switch>
+              <Route path="/" exact component={ProductListPage} />
+              <Route path="/checkout" exact component={CheckoutPage} />
+              <Route path="/login" exact component={LoginPage} />
+              <PrivateRoute path="/profile" exact component={ProfilePage} />
+              <Route patch="**" component={() => <h1>Not Found</h1>} />
+            </Switch>
           </Box>
         </Grommet>
+      </Router>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    isLoading: !state._persist.rehydrated
+  }
+}
+
+export default connect(mapStateToProps)(App);

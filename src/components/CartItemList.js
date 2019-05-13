@@ -9,16 +9,16 @@ class CartItemList extends Component {
       totalPrice,
     } = this.props
     return (
-        <Box pad="small">
-          {cartItems.map(item => (
-              <Box pad="small" border="bottom">
-                {item.name} x {item.amount}
-              </Box>
-          ))}
+      <Box pad="small">
+        {cartItems.map(item => (
           <Box pad="small" border="bottom">
-            {totalPrice} Baht
+            {item.name} x {item.amount}
           </Box>
+        ))}
+        <Box pad="small" border="bottom">
+          {totalPrice} Baht
         </Box>
+      </Box>
     )
   }
 }
