@@ -35,7 +35,7 @@ class AppBar extends React.Component {
           <ShoppingCartButton />
           {
             !isAuthenticated ?
-            <Button label="Login" onClick={() => this.props.login()}/>:
+            <Button label="Login" onClick={() => this.props.history.push('/login')}/>:
             <Button label="Logout" onClick={() => this.props.logout()}/>
           }
           {
