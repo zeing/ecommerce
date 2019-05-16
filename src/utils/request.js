@@ -1,4 +1,5 @@
 import axios from 'axios'
+import store from '../store'
 const KEY = 'motlin-token'
 // const CLIENT_ID = '4pakmXbHy4oVwFVJSK1yBA6AwZQGAj4hHkO1cfdzAt'
 const CLIENT_ID = 'PCvuouFCdj4Pii5AZTJj6zgMzNPIn1ooAVdHjJatNF'
@@ -32,8 +33,25 @@ instance.interceptors.request.use(async (config) => {
   }
   config.headers = {
     ...config.headers,
-    Authorization: `Bearer ${token.access_token}`
+    Authorization: `Bearer ${token.access_token}`,
   }
   return config;
 })
+
+instance.interceptors.request.use(async (config) => {
+  const state = store.getState()
+  const {
+    token: customerToken
+  } = state.user.token || {}
+  // check if token exist
+  if (!customerToken) {
+    return config
+  }
+  config.headers = {
+    ...config.headers,
+    'X-Moltin-Customer-Token': customerToken,
+  }
+  return config;
+})
+
 export default instance

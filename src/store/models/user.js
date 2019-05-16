@@ -1,8 +1,9 @@
-// import request from '../../utils/request'
+import request from '../../utils/request'
 
 export const user = {
   state: {
     token: null,
+    customer: null,
   },
   reducers: {
     setToken(state, payload) {
@@ -10,19 +11,61 @@ export const user = {
         ...state,
         token: payload
       }
+    },
+    setCustomer(state, payload) {
+      return {
+        ...state,
+        customer: payload
+      }
     }
   },
   effects: (dispatch) => ({
     async login(payload, rootState) {
-      // call api here, get token
-      const token = 'asdfasdfs ldfkjq;2lkj;123123'
-      if (payload.username === 'demo' && payload.password === 'password') {
-        return dispatch.user.setToken(token)
+      try {
+        const result = await request.post('/customers/tokens', {
+          data: {
+            ...payload,
+            type: 'token'
+          }
+        })
+        dispatch.user.setToken(result.data.data)
+        dispatch.cart.getCartItemsAsync()
+        return Promise.resolve()
+      } catch (e) {
+        return Promise.reject()
       }
-      return Promise.reject('Username or password not found')
     },
     async logout(payload, rootState) {
-      dispatch.user.setToken(null)
+      await dispatch.cart.setCartId(null)
+      await dispatch.user.setToken(null)
+      await dispatch.cart.getCartItemsAsync()
+    },
+    async register(payload, rootState) {
+      await request.post('/customers', {
+        data: payload
+      })
+      const {
+        email,
+        password
+      } = payload
+      const result = await dispatch.user.login({
+        email,
+        password
+      })
+      return Promise.resolve()
+    },
+    async getUser(payload, rootState) {
+      const {
+        customer_id,
+      } = rootState.user.token
+      try {
+        const result = await request.get(`/customers/${customer_id}`)
+        const customer = result.data.data
+        dispatch.user.setCustomer(customer)
+        return Promise.resolve(customer)
+      } catch (e) {
+        return Promise.reject(e)
+      }
     }
   }),
   selectors: {

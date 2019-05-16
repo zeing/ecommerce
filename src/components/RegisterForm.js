@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { TextInput, Button } from 'grommet';
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom';
-class LoginForm extends Component {
+
+class RegisterForm extends Component {
   state = {
+    type: 'customer',
+    name: '',
     email: '',
-    password: ''
+    password: '',
   }
   handleChange = (e) => {
     this.setState({
@@ -14,23 +16,22 @@ class LoginForm extends Component {
   }
   handleLogin = async () => {
     const {
-      login,
-      history,
+      register
     } = this.props;
     try {
-      await login(this.state)
-      alert('login success')
-      history.push('/profile')
+      await register(this.state)
+      alert('register success')
     } catch (e) {
-      alert('login fail')
+      alert('register fail')
     }
   }
   render() {
     return (
       <div>
+        <TextInput name="name" placeholder="Name" onChange={this.handleChange}/>
         <TextInput name="email" placeholder="Email" onChange={this.handleChange}/>
-        <TextInput name="password" placeholder="password" type="password" onChange={this.handleChange}/>
-        <Button label="Sign in" onClick={this.handleLogin}/>
+        <TextInput name="password" placeholder="Password" type="password" onChange={this.handleChange}/>
+        <Button label="Sign up" onClick={this.handleLogin}/>
       </div>
     )
   }
@@ -39,7 +40,7 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    login: dispatch.user.login
+    register: dispatch.user.register
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(LoginForm));
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterForm);

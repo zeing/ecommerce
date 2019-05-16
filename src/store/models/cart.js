@@ -1,45 +1,12 @@
 import request from '../../utils/request'
-
+import uuidv4 from 'uuid/v4'
 export const cart = {
   state: {
-    cartItems: [
-      // {
-      //   productId: 1,
-      //   amount: 2
-      // }
-    ],
+    cartItems: [],
     totalPrice: 0,
+    cartId: null
   },
   reducers: {
-    // handle state changes with pure functions
-    // addItem(state, payload) {
-    //   const item = state.cartItems.find(o => o.productId === payload);
-    //   if (item) {
-    //     const cartItems = state.cartItems.map(o => {
-    //       if (o.productId === payload) {
-    //         return {
-    //           ...o,
-    //           amount: o.amount + 1
-    //         }
-    //       }
-    //       return o
-    //     })
-    //     return {
-    //       ...state,
-    //       cartItems
-    //     }
-    //   }
-    //   return {
-    //     ...state,
-    //     cartItems: [{
-    //       productId: payload,
-    //       amount: 1
-    //     }, ...state.cartItems]
-    //   }
-    // },
-    // deleteItem(state, payload) {
-    //   return state
-    // },
     setCartItems(state, payload) {
       return {
         ...state,
@@ -51,12 +18,41 @@ export const cart = {
         ...state,
         totalPrice: payload
       }
+    },
+    setCartId(state, payload) {
+      return {
+        ...state,
+        cartId: payload
+      }
     }
   },
   effects: (dispatch) => ({
-    async getCartItemsAsync() {
-      const res = await request.get('/carts/123456/items?include=product')
-      console.log(res.data)
+    async getCartId(payload, rootState) {
+      let cartId = rootState.cart.cartId
+      if (cartId) {
+        return Promise.resolve(cartId)
+      }
+
+      try {
+        const customer = await dispatch.user.getUser()
+        cartId = customer.id
+      } catch (e) {
+        // cannot get customer
+        // try get cartId from localStorage
+        cartId = localStorage.getItem('cartId')
+        if (!cartId) {
+          // generate cart id
+          cartId = uuidv4()
+          localStorage.setItem('cartId', cartId)
+        }
+      }
+
+      return Promise.resolve(cartId)
+    },
+    async getCartItemsAsync(payload, rootState) {
+      // try get user info
+      const cartId = await dispatch.cart.getCartId()
+      const res = await request.get(`/carts/${cartId}/items?include=product`)
       const cleanData = res.data.data.map((item) => {
         return {
           id: item.id,
@@ -73,13 +69,15 @@ export const cart = {
       dispatch.cart.setTotalPrice(totalPrice)
     },
     async addItem(payload, rootState) {
-      await request.post(`/carts/123456/items`, {
+      const cartId = await dispatch.cart.getCartId()
+      await request.post(`/carts/${cartId}/items`, {
         data: payload
       })
       await dispatch.cart.getCartItemsAsync()
     },
     async deleteItem(payload, rootState) {
-      await request.delete(`/carts/123456/items/${payload.id}`)
+      const cartId = await dispatch.cart.getCartId()
+      await request.delete(`/carts/${cartId}/items/${payload.id}`)
       await dispatch.cart.getCartItemsAsync()
     },
   })
