@@ -23,7 +23,10 @@ class AppBar extends React.Component {
           vertical: 'small'
         }}
         elevation='medium'
-        style={{ zIndex: '1' }}
+        style={{
+          zIndex: '1',
+          minHeight: 80
+        }}
       >
         <Heading
           level="4"
