@@ -15,13 +15,13 @@ class CheckoutPage extends Component {
     this.props.getCartItems()
   }
 
-  onSubmit = () => {
+  onSubmit = (data) => {
     // const { history } = this.props
     const ans = confirm('Are you sure ?')
     // history.push('/payment')
     if (ans) {
       // request checkout api (moltin)
-      this.setState({ showModal: true })
+      console.log('checking out', data)
     }
   }
 
@@ -39,9 +39,6 @@ class CheckoutPage extends Component {
         <Box flex>
           <CheckoutForm onSubmit={this.onSubmit} />
         </Box>
-        {
-          showModal && <PaymentModal setShow={(showModal) => this.setState({ showModal })} />
-        }
       </Box>
     )
   }
@@ -52,7 +49,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  getCartItems: dispatch.cart.getCartItemsAsync
+  getCartItems: dispatch.cart.getCartItemsAsync,
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(CheckoutPage)

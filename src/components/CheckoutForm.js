@@ -3,6 +3,8 @@ import { Box, Form, Button, FormField, Heading } from 'grommet'
 
 class CheckoutForm extends React.Component {
   state = {
+    name: '',
+    email: '',
     first_name: '',
     last_name: '',
     company_name: '',
@@ -15,15 +17,37 @@ class CheckoutForm extends React.Component {
     country: '',
     instructions: '',
   }
-
   onChangeValue = (e) => {
     const { name, value } = e.target
     this.setState({ [name]: value })
   }
+  handleSubmit = () => {
+    const {
+      onSubmit
+    } = this.props
+    const {
+      name,
+      email,
+      ...addressInfo
+    } = this.state;
+    const data = {
+      customer: {
+        name,
+        email
+      },
+      billing_address: {
+        ...addressInfo
+      },
+      shipping_address: {
+        ...addressInfo
+      }
+    }
+    onSubmit(data)
+  }
 
   render() {
     return (
-      <Form onSubmit={() => this.props.onSubmit(this.state)}>
+      <Form onSubmit={this.handleSubmit}>
         <Box>
           <Heading level={3}>Your Info</Heading>
 
